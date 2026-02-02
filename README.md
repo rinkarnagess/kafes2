@@ -28,8 +28,7 @@
 
 Технологии:
 
-Vue 3/,
-Vite,
+Vue 3/Vite,
 Vue Router,
 HTML / CSS,
 JavaScript,
