@@ -48,6 +48,11 @@
     flex-wrap: wrap;
 }
 
+.product-page__cart-note {
+    color: var(--muted);
+    font-size: 14px;
+}
+
 .chip {
     padding: 8px 10px;
     border-radius: 999px;

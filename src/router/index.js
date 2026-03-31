@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../pages/Home.vue'
 import Catalog from '../pages/Catalog.vue'
 import Product from '../pages/Product.vue'
+import Cart from '../pages/Cart.vue'
 
 export const router = createRouter({
     history: createWebHistory(),
@@ -10,6 +11,7 @@ export const router = createRouter({
         { path: '/', name: 'home', component: Home },
         { path: '/catalog', name: 'catalog', component: Catalog },
         { path: '/product/:id', name: 'product', component: Product, props: true },
+        { path: '/cart', name: 'cart', component: Cart },
         { path: '/:pathMatch(.*)*', redirect: '/' },
     ],
 })

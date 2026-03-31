@@ -17,8 +17,16 @@
 
     <div class="product__bottom">
       <span class="price">{{ formattedPrice }}</span>
+      <span v-if="quantityInCart" class="product__status">В корзине: {{ quantityInCart }}</span>
+    </div>
+
+    <div class="product__actions">
+      <button class="btn btn--primary btn--small" type="button" @click="addToCart">
+        В корзину
+      </button>
+
       <RouterLink class="btn btn--small btn--ghost" :to="`/product/${product.id}`">
-        Смотреть
+        Подробнее
       </RouterLink>
     </div>
   </article>
@@ -27,10 +35,18 @@
 <script setup>
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useCart } from '../store/cart'
 
 const props = defineProps({
   product: { type: Object, required: true },
 })
 
+const { addItem, getQuantity } = useCart()
+
 const formattedPrice = computed(() => `${props.product.price.toFixed(2)}€`)
+const quantityInCart = computed(() => getQuantity(props.product.id))
+
+function addToCart() {
+  addItem(props.product)
+}
 </script>

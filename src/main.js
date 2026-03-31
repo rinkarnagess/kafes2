@@ -10,5 +10,6 @@ import './assets/pages/home.css'
 // (опционально) добавим стили для каталога/товара ниже
 import './assets/pages/catalog.css'
 import './assets/pages/product.css'
+import './assets/pages/cart.css'
 
 createApp(App).use(router).mount('#app')

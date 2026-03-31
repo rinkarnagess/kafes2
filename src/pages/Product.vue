@@ -5,33 +5,39 @@
         <div class="product-page__img">
           <img class="product-page__img-el" :src="product.image" :alt="product.title" />
         </div>
+
         <div class="product-page__info">
           <p class="badge">
             <span v-if="product.category === 'coffee'">Кофе</span>
             <span v-else>Аксессуар</span>
-            <span v-if="product.brew"> • {{ product.brew === 'espresso' ? 'Эспрессо' : 'Фильтр' }}</span>
+            <span v-if="product.brew">
+              • {{ product.brew === 'espresso' ? 'Эспрессо' : 'Фильтр' }}
+            </span>
           </p>
 
           <h1 class="product-page__title">{{ product.title }}</h1>
           <p class="product-page__desc">{{ product.description }}</p>
 
           <div class="product-page__buy">
-            <span class="price">{{ product.price.toFixed(2) }}€</span>
-            <button class="btn btn--primary" type="button" disabled>
+            <span class="price">{{ formatPrice(product.price) }}</span>
+            <button class="btn btn--primary" type="button" @click="addCurrentProduct">
               Добавить в корзину
             </button>
+            <span v-if="quantityInCart" class="product-page__cart-note">
+              В корзине: {{ quantityInCart }} шт.
+            </span>
           </div>
 
           <div v-if="product.notes?.length" class="product-page__chips">
-            <span class="chip" v-for="n in product.notes" :key="n">{{ n }}</span>
+            <span v-for="note in product.notes" :key="note" class="chip">{{ note }}</span>
           </div>
 
           <div v-if="product.details" class="product-page__details">
             <h2 class="section__title">Характеристики</h2>
             <ul class="details">
-              <li v-for="(val, key) in product.details" :key="key">
+              <li v-for="(value, key) in product.details" :key="key">
                 <span class="details__key">{{ key }}</span>
-                <span class="details__val">{{ val }}</span>
+                <span class="details__val">{{ value }}</span>
               </li>
             </ul>
           </div>
@@ -55,11 +61,33 @@
 import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { products } from '../data/products'
+import { useCart } from '../store/cart'
 
 const route = useRoute()
+const { addItem, getQuantity } = useCart()
 
 const product = computed(() => {
   const id = route.params.id
-  return products.find((p) => p.id === id) || null
+  return products.find((item) => item.id === id) || null
 })
+
+const quantityInCart = computed(() => {
+  if (!product.value) {
+    return 0
+  }
+
+  return getQuantity(product.value.id)
+})
+
+function formatPrice(value) {
+  return `${value.toFixed(2)}€`
+}
+
+function addCurrentProduct() {
+  if (!product.value) {
+    return
+  }
+
+  addItem(product.value)
+}
 </script>
